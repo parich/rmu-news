@@ -1,0 +1,35 @@
+```
+└── 📁rmu-news
+    └── 📁build
+        └── blocks-manifest.php
+        └── 📁rmu-news
+            └── block.json
+            └── index-rtl.css
+            └── index.asset.php
+            └── index.css
+            └── index.css.map
+            └── index.js
+            └── index.js.map
+            └── render.php
+            └── style-index-rtl.css
+            └── style-index.css
+            └── style-index.css.map
+            └── view.asset.php
+            └── view.js
+            └── view.js.map
+    └── 📁src
+        └── 📁rmu-news
+            └── block.json
+            └── edit.js
+            └── editor.scss
+            └── index.js
+            └── render.php
+            └── style.scss
+            └── view.js
+    └── .editorconfig
+    └── .gitignore
+    └── package-lock.json
+    └── package.json
+    └── readme.txt
+    └── rmu-news.php
+```

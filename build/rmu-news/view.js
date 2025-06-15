@@ -2,31 +2,31 @@
 /*!******************************!*\
   !*** ./src/rmu-news/view.js ***!
   \******************************/
-/**
- * Use this file for JavaScript code that you want to run in the front-end
- * on posts/pages that contain this block.
- *
- * When this file is defined as the value of the `viewScript` property
- * in `block.json` it will be enqueued on the front end of the site.
- *
- * Example:
- *
- * ```js
- * {
- *   "viewScript": "file:./view.js"
- * }
- * ```
- *
- * If you're not making any changes to this file because your project doesn't need any
- * JavaScript running in the front-end, then you should delete this file and remove
- * the `viewScript` property from `block.json`.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
- */
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.getElementById("rmu-news-container");
+  const apiEndpoint = "https://www.rmu.ac.th/api/posts"; // URL can be dynamic if needed
 
-/* eslint-disable no-console */
-console.log('Hello World! (from create-block-rmu-news block)');
-/* eslint-enable no-console */
+  fetch(apiEndpoint).then(response => response.json()).then(data => {
+    if (data.status === "success") {
+      console.log(data);
+      const articles = data.data;
+      articles.forEach(article => {
+        const articleElement = document.createElement("div");
+        articleElement.className = "rmu-news-article";
+        articleElement.innerHTML = `
+                        <h2>${article.topic}</h2>
+                        <p>${article.detail}</p>
+                        <a href="${article.urlto || "#"}">Read more</a>
+                    `;
+        container.appendChild(articleElement);
+      });
+    } else {
+      container.textContent = "Failed to load news.";
+    }
+  }).catch(error => {
+    container.textContent = "Error fetching data: " + error;
+  });
+});
 /******/ })()
 ;
 //# sourceMappingURL=view.js.map

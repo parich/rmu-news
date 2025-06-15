@@ -1,12 +1,30 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
-
+// file: src/rmu-news/style.scss
 .wp-block-create-block-rmu-news {
 	background-color: #21759b;
 	color: #fff;
+	padding: 2px;
+}
+
+.rmu-news-article {
+	background-color: var(--rmu-news-active-color, #21759b);
+	color: var(--rmu-news-text-color, #fff);
+	padding: 10px;
+	margin-bottom: 20px;
+	h2 {
+		font-size: 1.5em;
+	}
+	p {
+		font-size: 1em;
+	}
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+}
+
+// Handle color input in admin settings
+.wp-block-create-block-rmu-news {
+	background-color: var(--rmu-news-active-color, #21759b);
+	color: var(--rmu-news-text-color, #fff);
 	padding: 2px;
 }
