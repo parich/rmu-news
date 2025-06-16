@@ -1,3 +1,4 @@
-<p <?php echo get_block_wrapper_attributes(); ?>>
-	<?php esc_html_e('Rmu News – hello from a dynamic block!', 'rmu-news'); ?>
-</p>
+<!-- file src\rmu-news\render.php -->
+<div id="rmu-news-container">
+	<input type="text" id="search" placeholder="ค้นหาโพสต์กลุ่มงานประชาสัมพันธ์" />
+</div>

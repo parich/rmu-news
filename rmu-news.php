@@ -1,3 +1,4 @@
+<!-- file : rmu-news.php -->
 <?php
 /**
  * Plugin Name:       Rmu News
@@ -36,19 +37,18 @@ add_action('init', 'create_block_rmu_news_block_init');
 
 function rmu_news_enqueue_assets()
 {
-	wp_enqueue_script(
-		'rmu-news-script',
-		plugins_url('src/rmu-news/view.js', __FILE__),
-		['wp-element', 'wp-components', 'wp-block-editor'],
-		filemtime(plugin_dir_path(__FILE__) . 'src/rmu-news/view.js'),
-		true
-	);
-
 	wp_enqueue_style(
 		'rmu-news-style',
-		plugins_url('src/rmu-news/style.css', __FILE__),
-		[],
-		filemtime(plugin_dir_path(__FILE__) . 'src/rmu-news/style.css')
+		plugins_url('build/rmu-news/style-index.css', __FILE__),
+		array(),
+		'1.0'
+	);
+	wp_enqueue_script(
+		'rmu-news-view',
+		plugins_url('build/rmu-news/view.js', __FILE__),
+		array(),
+		'1.0',
+		true
 	);
 }
 add_action('enqueue_block_editor_assets', 'rmu_news_enqueue_assets');
@@ -57,9 +57,12 @@ add_action('enqueue_block_editor_assets', 'rmu_news_enqueue_assets');
 function rmu_news_shortcode($atts)
 {
 	ob_start();
-	?>
-	<div id="rmu-news-container"></div>
-	<?php
+	$render_file = plugin_dir_path(__FILE__) . 'build/posts-pr-rmu/render.php';
+	if (file_exists($render_file)) {
+		include $render_file;
+	} else {
+		echo '<!-- posts-pr-rmu render.php not found -->';
+	}
 	return ob_get_clean();
 }
 add_shortcode('rmu_news', 'rmu_news_shortcode');

@@ -1,31 +1,47 @@
 /*!************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/rmu-news/style.scss ***!
   \************************************************************************************************************************************************************************************************************************************************/
-.wp-block-create-block-rmu-news {
-  background-color: #21759b;
-  color: #fff;
-  padding: 2px;
+#rmu-news-container {
+  font-family: "Tahoma", sans-serif;
+  font-size: 14px;
 }
-
-.rmu-news-article {
-  background-color: var(--rmu-news-active-color, #21759b);
-  color: var(--rmu-news-text-color, #fff);
-  padding: 10px;
-  margin-bottom: 20px;
+#rmu-news-container .rmu-news-item {
+  padding: 10px 0;
+  border-bottom: 1px dotted #ccc;
 }
-.rmu-news-article h2 {
-  font-size: 1.5em;
+#rmu-news-container .rmu-news-item .rmu-news-date {
+  font-weight: bold;
+  margin-bottom: 4px;
 }
-.rmu-news-article p {
-  font-size: 1em;
+#rmu-news-container .rmu-news-item .rmu-news-title {
+  margin-bottom: 4px;
 }
-.rmu-news-article a {
-  color: inherit;
+#rmu-news-container .rmu-news-item .rmu-news-title a {
   text-decoration: none;
+  color: #000;
+  font-weight: bold;
 }
-
-.wp-block-create-block-rmu-news {
-  background-color: var(--rmu-news-active-color, #21759b);
-  color: var(--rmu-news-text-color, #fff);
-  padding: 2px;
+#rmu-news-container .rmu-news-item .rmu-news-title a:hover {
+  color: #21759b;
+}
+#rmu-news-container .rmu-news-item .rmu-news-meta {
+  color: #888;
+  font-size: 12px;
+}
+#rmu-news-container .rmu-news-buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+#rmu-news-container .rmu-news-buttons button {
+  padding: 6px 12px;
+  background-color: #0b74b1;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+}
+#rmu-news-container .rmu-news-buttons button:hover {
+  background-color: #ddd;
 }
