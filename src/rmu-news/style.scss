@@ -1,53 +1,186 @@
-// file : src/rmu-news/style.scss
+// file: src/rmu-news/style.scss
+$primary-color: #2874fc;
+$hover-color: #e0ecff;
+$border-color: #ddd;
+$text-color: #333;
+$loading-color: #666;
+$error-color: #721c24;
+$no-data-bg-color: #f8f9fa;
+$error-bg-color: #f8d7da;
+$error-border-color: #f5c6cb;
+.rmu-news-shortcode,
 #rmu-news-container {
-	font-family: "Tahoma", sans-serif;
 	font-size: 14px;
-
-	.rmu-news-item {
-		padding: 10px 0;
-		border-bottom: 1px dotted #ccc;
-
-		.rmu-news-date {
-			font-weight: bold;
-			margin-bottom: 4px;
-		}
-
-		.rmu-news-title {
-			margin-bottom: 4px;
-
-			a {
-				text-decoration: none;
-				color: #000;
-				font-weight: bold;
-
-				&:hover {
-					color: #21759b;
-				}
+	max-width: 100%;
+	margin: 0 auto;
+	.rmu-news-search-container {
+		justify-items: center;
+		margin-bottom: 15px;
+		#rmu-news-search {
+			width: 500px;
+			max-width: 1000px;
+			padding: 8px 12px;
+			border: 1px solid $border-color;
+			border-radius: 4px;
+			font-size: 14px;
+			margin-bottom: 10px;
+			&:focus {
+				outline: none;
+				border-color: $primary-color;
+				box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
 			}
-		}
-
-		.rmu-news-meta {
-			color: #888;
-			font-size: 12px;
 		}
 	}
 	.rmu-news-buttons {
-		margin-top: 20px;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 10px;
-
+		justify-content: center;
+		gap: 0;
+		margin-bottom: 20px;
 		button {
-			padding: 6px 12px;
-			background-color: #0b74b1;
-			border: 1px solid #ccc;
+			padding: 12px 28px;
+			background-color: $primary-color;
+			border: none;
+			border-right: 1px solid #ccc;
+			border-radius: 0;
 			cursor: pointer;
-			font-size: 14px;
-			border-radius: 4px;
-
+			font-weight: 500;
+			transition:
+				background 0.2s,
+				color 0.2s,
+				border 0.2s;
+			box-shadow: none;
+			// color: #333;
+			outline: none;
 			&:hover {
-				background-color: #ddd;
+				background-color: $hover-color;
+				transform: translateY(-1px);
+			}
+			&.active {
+				background-color: #e0ecff;
+				color: #2874fc;
+				z-index: 2;
+			}
+			&:focus {
+				outline: none;
+				box-shadow: 0 0 0 2px rgba($primary-color, 0.3);
 			}
 		}
+		// ลบ border-right ของปุ่มสุดท้าย
+		button:last-child {
+			border-right: none;
+		}
+	}
+	.rmu-news-loading {
+		text-align: center;
+		padding: 20px;
+		color: $loading-color;
+		font-style: italic;
+	}
+	.rmu-news-content {
+		min-height: 100px;
+	}
+	.rmu-news-item {
+		padding: 15px 0;
+		border-bottom: 1px dotted #ccc;
+		transition: background-color 0.2s ease;
+		&:hover {
+			background-color: #f9f9f9;
+		}
+		&:last-child {
+			border-bottom: none;
+		}
+		&.rmu-news-no-data,
+		&.rmu-news-error {
+			text-align: center;
+			padding: 30px 20px;
+			color: #666;
+			font-style: italic;
+			background-color: $no-data-bg-color;
+			border: 1px solid $border-color;
+			border-radius: 4px;
+			margin: 10px 0;
+		}
+		&.rmu-news-error {
+			background-color: $error-bg-color;
+			border-color: $error-border-color;
+			color: $error-color;
+		}
+		.rmu-news-date {
+			font-weight: bold;
+			margin-bottom: 6px;
+			color: $primary-color;
+			font-size: 13px;
+		}
+		.rmu-news-title {
+			margin-bottom: 6px;
+			line-height: 1.4;
+			a {
+				text-decoration: none;
+				color: $text-color;
+				font-weight: bold;
+				display: block;
+				transition: color 0.2s ease;
+				&:hover {
+					color: $primary-color;
+					text-decoration: underline;
+				}
+				&:visited {
+					color: #666;
+				}
+			}
+		}
+		.rmu-news-meta {
+			color: #888; // ยังคงใช้สีตรงนี้ไว้
+			font-size: 12px;
+			margin-top: 4px;
+		}
+	}
+	// Responsive design
+	@media (max-width: 768px) {
+		.rmu-news-buttons {
+			gap: 0;
+			justify-content: center;
+			button {
+				padding: 6px 12px;
+				font-size: 13px;
+			}
+		}
+		.rmu-news-search-container {
+			#rmu-news-search {
+				font-size: 16px; // Prevent zoom on iOS
+			}
+		}
+		.rmu-news-item {
+			padding: 12px 0;
+			.rmu-news-title a {
+				font-size: 14px;
+			}
+		}
+	}
+	@media (max-width: 480px) {
+		font-size: 13px;
+		.rmu-news-buttons {
+			button {
+				gap: 0;
+				width: 100%;
+				margin-bottom: 5px;
+			}
+		}
+		.rmu-news-search-container {
+			#rmu-news-search {
+				width: 100%;
+			}
+		}
+	}
+}
+// Global styles for WordPress admin
+.wp-admin {
+	.rmu-news-shortcode,
+	#rmu-news-container {
+		background: white;
+		padding: 20px;
+		border: 1px solid $border-color;
+		border-radius: 4px;
 	}
 }
