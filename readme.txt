@@ -53,3 +53,5 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 You may provide arbitrary sections, in the same format as the ones above. This may be of use for extremely complicated
 plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
 "installation." Arbitrary sections will be shown below the built-in sections outlined above.
+
+##/api/posts/filter?start_date=2025-06-01&end_date=2025-06-15&post=ข่าว&user=สมชาย&faculty=วิศวกรรมศาสตร์&category=ประกาศ

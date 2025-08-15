@@ -80,8 +80,8 @@ function rmu_news_enqueue_frontend_assets()
 	wp_localize_script('rmu-news-view', 'rmuNewsSettings', array(
 		'apiUrl' => get_option('rmu_news_api_url', 'https://www.rmu.ac.th/api/posts/filter'),
 		'buttonColor' => get_option('rmu_news_button_color', '#2874fc'),
-		'buttonTextColor' => get_option('rmu_news_button_text_color', '#2874fc'),
-		'borderColor' => get_option('rmu_news_button_border_color', '#0b74b1'),
+		'buttonTextColor' => get_option('rmu_news_button_text_color', '#e0ecff'),
+		'borderColor' => get_option('rmu_news_button_border_color', '#ccc'),
 	));
 }
 add_action('wp_enqueue_scripts', 'rmu_news_enqueue_frontend_assets');
@@ -146,9 +146,9 @@ function rmu_news_options_page_html()
 
 	// Use default values if options are not set
 	$api_url = get_option('rmu_news_api_url', 'https://www.rmu.ac.th/api/posts/filter');
-	$button_color = get_option('rmu_news_button_color', '#0b74b1');
-	$button_text_color = get_option('rmu_news_button_text_color', '#000000'); // ใช้ default color เมื่อไม่พบค่าจริง
-	$button_border_color = get_option('rmu_news_button_border_color', '#0b74b1'); // ใช้ default color เมื่อไม่พบค่าจริง
+	$button_color = get_option('rmu_news_button_color', '#2874fc');
+	$button_text_color = get_option('rmu_news_button_text_color', '#e0ecff'); // ใช้ default color เมื่อไม่พบค่าจริง
+	$button_border_color = get_option('rmu_news_button_border_color', '#ccc'); // ใช้ default color เมื่อไม่พบค่าจริง
 	?>
 	<div class="wrap">
 		<h1>RMU News Settings</h1>

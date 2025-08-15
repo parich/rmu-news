@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 				// เพิ่ม active class ให้ปุ่มปัจจุบัน
 				btn.classList.add("active");
-				btn.style.backgroundColor = "#000";
+				btn.style.backgroundColor = darkenColor(settings.buttonColor, -20);
 
 				fetchAndRenderNews(category, container);
 			});

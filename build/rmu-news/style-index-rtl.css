@@ -14,10 +14,9 @@
 }
 .rmu-news-shortcode .rmu-news-search-container #rmu-news-search,
 #rmu-news-container .rmu-news-search-container #rmu-news-search {
-  width: 500px;
-  max-width: 1000px;
+  width: 100%;
   padding: 8px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--wp--preset--color--border);
   border-radius: 4px;
   font-size: 14px;
   margin-bottom: 10px;
@@ -52,6 +51,7 @@
 .rmu-news-shortcode .rmu-news-buttons button:hover,
 #rmu-news-container .rmu-news-buttons button:hover {
   background-color: #e0ecff;
+  color: #2874fc;
   transform: translateY(-1px);
 }
 .rmu-news-shortcode .rmu-news-buttons button.active,
@@ -88,7 +88,7 @@
 }
 .rmu-news-shortcode .rmu-news-item:hover,
 #rmu-news-container .rmu-news-item:hover {
-  background-color: #f9f9f9;
+  background-color: #e0ecff;
 }
 .rmu-news-shortcode .rmu-news-item:last-child,
 #rmu-news-container .rmu-news-item:last-child {
