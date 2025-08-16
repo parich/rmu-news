@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("RMU News: ไม่พบ container");
     return;
   }
-
   // ประมวลผลแต่ละ container
   containers.forEach(function (container) {
     initRmuNews(container);
@@ -43,9 +42,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ดึงการตั้งค่าจาก WordPress
     const settings = window.rmuNewsSettings || {
-      apiUrl: "",
-      activeColor: "",
-      buttonTextColor: ""
+      apiUrl: "https://www.rmu.ac.th/api/posts/filter",
+      buttonColor: "#2874fc",
+      buttonTextColor: "#e0ecff",
+      borderColor: "#ccc",
+      buttonHoverColor: "#e0ecff",
+      buttonHoverTextColor: "#2874fc"
     };
 
     // ดึงข้อมูลจาก data attributes
@@ -65,16 +67,29 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.style.backgroundColor = settings.buttonColor;
       btn.style.color = settings.buttonTextColor;
       btn.style.borderColor = settings.borderColor;
+      btn.addEventListener("mouseover", function () {
+        if (!btn.classList.contains("active")) {
+          btn.style.backgroundColor = settings.buttonHoverColor;
+          btn.style.color = settings.buttonHoverTextColor;
+        }
+      });
+      btn.addEventListener("mouseout", function () {
+        if (!btn.classList.contains("active")) {
+          btn.style.backgroundColor = settings.buttonColor;
+          btn.style.color = settings.buttonTextColor;
+        }
+      });
       btn.addEventListener("click", function () {
         // ลบ active class จากปุ่มอื่น
         buttonsContainer.querySelectorAll("button").forEach(b => {
           b.classList.remove("active");
           b.style.backgroundColor = settings.buttonColor;
+          b.style.color = settings.buttonTextColor;
         });
-
         // เพิ่ม active class ให้ปุ่มปัจจุบัน
         btn.classList.add("active");
-        btn.style.backgroundColor = darkenColor(settings.buttonColor, -20);
+        btn.style.backgroundColor = settings.buttonHoverColor;
+        btn.style.color = settings.buttonHoverTextColor;
         fetchAndRenderNews(category, container);
       });
       buttonsContainer.appendChild(btn);
@@ -113,17 +128,18 @@ document.addEventListener("DOMContentLoaded", function () {
         loadingElement.style.display = "block";
       }
 
-      // สร้าง API endpoint ตามที่ระบุ
+      // สร้าง API endpoint โดยใช้ apiUrl จากการตั้งค่า
       let apiEndpoint;
+      const baseUrl = settings.apiUrl || "https://www.rmu.ac.th/api/posts/filter";
       if (searchTerm) {
         // สำหรับกรองข้อมูลตามคำค้นหาจาก input
-        apiEndpoint = `https://www.rmu.ac.th/api/posts/filter?post=${encodeURIComponent(searchTerm)}`;
+        apiEndpoint = `${baseUrl}?post=${encodeURIComponent(searchTerm)}`;
       } else if (category && category !== "ทั้งหมด") {
         // สำหรับหมวดหมู่เฉพาะ
-        apiEndpoint = `https://www.rmu.ac.th/api/posts/filter?category=${encodeURIComponent(category)}`;
+        apiEndpoint = `${baseUrl}?category=${encodeURIComponent(category)}`;
       } else {
         // สำหรับโพสต์ทั้งหมด
-        apiEndpoint = `https://www.rmu.ac.th/api/posts/filter`;
+        apiEndpoint = baseUrl;
       }
 
       // ล้างข่าวเก่าออกก่อน
@@ -141,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (data.status === "success" && data.data) {
           const articles = data.data;
-
           // ตรวจสอบค่าจาก data-limit
           const limit = parseInt(targetContainer.getAttribute("data-limit")) || 0;
           const limitedArticles = limit > 0 ? articles.slice(0, limit) : articles;
@@ -158,6 +173,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const articleElement = document.createElement("div");
             articleElement.className = "rmu-news-item";
 
+            // สร้าง URL สำหรับลิงก์โดยใช้ baseUrl
+            const baseUrlForLink = settings.apiUrl ? settings.apiUrl.replace("/api/posts/filter", "") : "https://www.rmu.ac.th";
+
             // กำหนดหมวดหมู่
             const categoryTags = `<span class="rmu-news-category">${escapeHtml(article.category_name)}</span>`;
             articleElement.innerHTML = `
@@ -167,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="rmu-news-meta">เปิดอ่าน ${article.count_view || 0} ครั้ง</div>
             </div>
             <div class="rmu-news-title">
-                <a href="https://www.rmu.ac.th/single/${article.id}/post" target="_blank" rel="noopener">${escapeHtml(article.topic)}</a>
+                <a href="${baseUrlForLink}/single/${article.id}/post" target="_blank" rel="noopener">${escapeHtml(article.topic)}</a>
             </div>
             <div class="rmu-news-category">${categoryTags}</div>
         </div>
@@ -199,14 +217,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
-  }
-  function darkenColor(color, percent) {
-    const num = parseInt(color.replace("#", ""), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = (num >> 16) - amt;
-    const G = (num >> 8 & 0x00ff) - amt;
-    const B = (num & 0x0000ff) - amt;
-    return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 + (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
   }
 });
 /******/ })()
