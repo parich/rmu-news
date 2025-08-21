@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		console.log("RMU News: ไม่พบ container");
 		return;
 	}
+
 	// ประมวลผลแต่ละ container
 	containers.forEach(function (container) {
 		initRmuNews(container);
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function initRmuNews(container) {
 		container.setAttribute("data-initialized", "true");
+
 		const buttonsData = [
 			{ label: "ทั้งหมด", category: "ทั้งหมด" },
 			{ label: "ข่าวสมัครงาน", category: "สมัครงาน" },
@@ -34,6 +36,16 @@ document.addEventListener("DOMContentLoaded", function () {
 			borderColor: "#ccc",
 			buttonHoverColor: "#e0ecff",
 			buttonHoverTextColor: "#2874fc",
+			// เพิ่มการตั้งค่าสำหรับ News Item
+			itemBackgroundColor: "#ffffff",
+			itemBorderColor: "#e1e5e9",
+			itemHoverBorderColor: "#2874fc",
+			itemTitleColor: "#333333",
+			itemTitleHoverColor: "#2874fc",
+			itemDateColor: "#2874fc",
+			itemMetaColor: "#888888",
+			itemCategoryBackground: "#2874fc",
+			itemCategoryTextColor: "#ffffff",
 		};
 
 		// ดึงข้อมูลจาก data attributes
@@ -44,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		// สร้างปุ่มและเพิ่ม event listener
 		const buttonsContainer = document.createElement("div");
 		buttonsContainer.className = "rmu-news-buttons";
+
 		buttonsData.forEach(({ label, category }) => {
 			const btn = document.createElement("button");
 			btn.textContent = label;
@@ -73,12 +86,15 @@ document.addEventListener("DOMContentLoaded", function () {
 					b.style.backgroundColor = settings.buttonColor;
 					b.style.color = settings.buttonTextColor;
 				});
+
 				// เพิ่ม active class ให้ปุ่มปัจจุบัน
 				btn.classList.add("active");
 				btn.style.backgroundColor = settings.buttonHoverColor;
 				btn.style.color = settings.buttonHoverTextColor;
+
 				fetchAndRenderNews(category, container);
 			});
+
 			buttonsContainer.appendChild(btn);
 		});
 
@@ -99,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			searchInput.addEventListener("input", function () {
 				clearTimeout(searchTimeout);
 				const searchTerm = this.value.trim();
+
 				searchTimeout = setTimeout(() => {
 					const activeButton = buttonsContainer.querySelector("button.active");
 					const activeCategory = activeButton
@@ -156,6 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 					if (data.status === "success" && data.data) {
 						const articles = data.data;
+
 						// ตรวจสอบค่าจาก data-limit
 						const limit =
 							parseInt(targetContainer.getAttribute("data-limit")) || 0;
@@ -194,34 +212,76 @@ document.addEventListener("DOMContentLoaded", function () {
 							const articleElement = document.createElement("div");
 							articleElement.className = "rmu-news-item";
 
+							// ใช้สีจากการตั้งค่า
+							articleElement.style.backgroundColor =
+								settings.itemBackgroundColor;
+							articleElement.style.borderColor = settings.itemBorderColor;
+
 							// สร้าง URL สำหรับลิงก์โดยใช้ baseUrl
 							const baseUrlForLink = settings.apiUrl
 								? settings.apiUrl.replace("/api/posts/filter", "")
 								: "https://www.rmu.ac.th";
 
 							// กำหนดหมวดหมู่
-							const categoryTags = `<span class="rmu-news-category">${escapeHtml(
-								article.category_name,
-							)}</span>`;
+							const categoryTags = `<span class="rmu-news-category-span" style="
+                                background: ${settings.itemCategoryBackground};
+                                color: ${settings.itemCategoryTextColor};
+                                box-shadow: 0 2px 4px ${hexToRgba(
+																	settings.itemCategoryBackground,
+																	0.3,
+																)};
+                            ">${escapeHtml(article.category_name)}</span>`;
 
 							articleElement.innerHTML = `
-        <div class="rmu-news-body">
-            <div class="rmu-news-date-meta">
-                <div class="rmu-news-date">${formattedDate}</div>
-                <div class="rmu-news-meta">เปิดอ่าน ${
-									article.count_view || 0
-								} ครั้ง</div>
-            </div>
-            <div class="rmu-news-title">
-                <a href="${baseUrlForLink}/single/${
-									article.id
-								}/post" target="_blank" rel="noopener">${escapeHtml(
-									article.topic,
-								)}</a>
-            </div>
-            <div class="rmu-news-category">${categoryTags}</div>
-        </div>
-    `;
+                                <div class="rmu-news-body">
+                                    <div class="rmu-news-date-meta">
+                                        <div class="rmu-news-date" style="
+                                            color: ${settings.itemDateColor};
+                                            background: ${hexToRgba(
+																							settings.itemDateColor,
+																							0.1,
+																						)};
+                                            border-color: ${hexToRgba(
+																							settings.itemDateColor,
+																							0.2,
+																						)};
+                                        ">${formattedDate}</div>
+                                        <div class="rmu-news-meta" style="
+                                            color: ${settings.itemMetaColor};
+                                        ">เปิดอ่าน ${
+																					article.count_view || 0
+																				} ครั้ง</div>
+                                    </div>
+                                    <div class="rmu-news-title">
+                                        <a href="${baseUrlForLink}/single/${
+																					article.id
+																				}/post" 
+                                           target="_blank" 
+                                           rel="noopener"
+                                           style="color: ${
+																							settings.itemTitleColor
+																						};"
+                                           onmouseover="this.style.color='${
+																							settings.itemTitleHoverColor
+																						}'"
+                                           onmouseout="this.style.color='${
+																							settings.itemTitleColor
+																						}'"
+                                        >${escapeHtml(article.topic)}</a>
+                                    </div>
+                                    <div class="rmu-news-category">${categoryTags}</div>
+                                </div>
+                            `;
+
+							// เพิ่ม hover effect สำหรับ border
+							articleElement.addEventListener("mouseenter", function () {
+								this.style.borderColor = settings.itemHoverBorderColor;
+							});
+
+							articleElement.addEventListener("mouseleave", function () {
+								this.style.borderColor = settings.itemBorderColor;
+							});
+
 							contentElement.appendChild(articleElement);
 						});
 					} else {
@@ -230,10 +290,12 @@ document.addEventListener("DOMContentLoaded", function () {
 				})
 				.catch((error) => {
 					console.error("RMU News Error:", error);
+
 					// ซ่อน loading
 					if (loadingElement) {
 						loadingElement.style.display = "none";
 					}
+
 					const errorMsg = document.createElement("div");
 					errorMsg.className = "rmu-news-item rmu-news-error";
 					errorMsg.textContent =
@@ -251,5 +313,24 @@ document.addEventListener("DOMContentLoaded", function () {
 		const div = document.createElement("div");
 		div.textContent = text;
 		return div.innerHTML;
+	}
+
+	// Helper function to convert hex to rgba
+	function hexToRgba(hex, alpha) {
+		if (!hex) return `rgba(0,0,0,${alpha})`;
+
+		hex = hex.replace("#", "");
+		if (hex.length === 3) {
+			hex = hex
+				.split("")
+				.map((char) => char + char)
+				.join("");
+		}
+
+		const r = parseInt(hex.substring(0, 2), 16);
+		const g = parseInt(hex.substring(2, 4), 16);
+		const b = parseInt(hex.substring(4, 6), 16);
+
+		return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 	}
 });
