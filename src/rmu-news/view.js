@@ -46,12 +46,21 @@ document.addEventListener("DOMContentLoaded", function () {
 			itemMetaColor: "#888888",
 			itemCategoryBackground: "#2874fc",
 			itemCategoryTextColor: "#ffffff",
+			// โหมดการแสดงผล
+			defaultDisplayMode: "list",
 		};
 
 		// ดึงข้อมูลจาก data attributes
 		const defaultCategory =
 			container.getAttribute("data-category") || "ทั้งหมด";
 		const limit = container.getAttribute("data-limit") || 10;
+		
+		// การตั้งค่าโหมดการแสดงผล
+		let currentDisplayMode = settings.defaultDisplayMode || 'list';
+		const contentElement = container.querySelector('.rmu-news-content');
+		if (contentElement) {
+			contentElement.className = `rmu-news-content ${currentDisplayMode}-view`;
+		}
 
 		// สร้างปุ่มและเพิ่ม event listener
 		const buttonsContainer = document.createElement("div");
@@ -98,15 +107,39 @@ document.addEventListener("DOMContentLoaded", function () {
 			buttonsContainer.appendChild(btn);
 		});
 
-		// แทรกปุ่มหลังจาก search input
+		// แทรกปุ่มหลังจาก search container
 		const searchContainer = container.querySelector(
 			".rmu-news-search-container",
 		);
 		if (searchContainer) {
-			searchContainer.appendChild(buttonsContainer);
+			// แทรกปุ่มหลังจาก search container แทนที่จะใส่ข้างใน
+			searchContainer.insertAdjacentElement('afterend', buttonsContainer);
 		} else {
 			container.insertBefore(buttonsContainer, container.firstChild);
 		}
+
+		// ตั้งค่าปุ่มสลับโหมดการแสดงผล
+		const viewToggleButtons = container.querySelectorAll('.view-toggle-btn');
+		viewToggleButtons.forEach(btn => {
+			// ตั้งค่าปุ่ม active ตามโหมดเริ่มต้น
+			if (btn.dataset.view === currentDisplayMode) {
+				btn.classList.add('active');
+			}
+
+			btn.addEventListener('click', function() {
+				// ลบ active class จากปุ่มทั้งหมด
+				viewToggleButtons.forEach(b => b.classList.remove('active'));
+				
+				// เพิ่ม active class ให้ปุ่มปัจจุบัน
+				this.classList.add('active');
+				
+				// อัปเดตโหมดการแสดงผล
+				currentDisplayMode = this.dataset.view;
+				if (contentElement) {
+					contentElement.className = `rmu-news-content ${currentDisplayMode}-view`;
+				}
+			});
+		});
 
 		// เพิ่ม search functionality
 		const searchInput = container.querySelector("#rmu-news-search");
@@ -157,6 +190,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			// ล้างข่าวเก่าออกก่อน
 			const oldNews = contentElement.querySelectorAll(".rmu-news-item");
 			oldNews.forEach((el) => el.remove());
+			
+			// รักษาโหมดการแสดงผลปัจจุบัน
+			contentElement.className = `rmu-news-content ${currentDisplayMode}-view`;
 
 			fetch(apiEndpoint)
 				.then((response) => {

@@ -96,6 +96,8 @@ function rmu_news_enqueue_frontend_assets()
 		'itemMetaColor' => get_option('rmu_news_item_meta_color', '#888888'),
 		'itemCategoryBackground' => get_option('rmu_news_item_category_background', '#2874fc'),
 		'itemCategoryTextColor' => get_option('rmu_news_item_category_text_color', '#ffffff'),
+		// เพิ่มการตั้งค่าโหมดการแสดงผล
+		'defaultDisplayMode' => get_option('rmu_news_default_display_mode', 'list'),
 	));
 
 	// เพิ่ม Custom CSS สำหรับ News Item
@@ -239,7 +241,8 @@ function rmu_news_get_default_settings()
 		'item_date_color' => '#2874fc',
 		'item_meta_color' => '#888888',
 		'item_category_background' => '#2874fc',
-		'item_category_text_color' => '#ffffff'
+		'item_category_text_color' => '#ffffff',
+		'default_display_mode' => 'list'
 	);
 }
 
@@ -287,6 +290,9 @@ function rmu_news_options_page_html()
 		update_option('rmu_news_item_meta_color', sanitize_hex_color($_POST['item_meta_color']));
 		update_option('rmu_news_item_category_background', sanitize_hex_color($_POST['item_category_background']));
 		update_option('rmu_news_item_category_text_color', sanitize_hex_color($_POST['item_category_text_color']));
+		
+		// เพิ่มการบันทึกการตั้งค่าโหมดการแสดงผล
+		update_option('rmu_news_default_display_mode', sanitize_text_field($_POST['default_display_mode']));
 
 		// แสดงข้อความยืนยัน
 		echo '<div class="notice notice-success"><p>Settings saved!</p></div>';
@@ -313,6 +319,9 @@ function rmu_news_options_page_html()
 	$item_category_background = get_option('rmu_news_item_category_background', $defaults['item_category_background']);
 	$item_category_text_color = get_option('rmu_news_item_category_text_color', $defaults['item_category_text_color']);
 
+	// การตั้งค่าโหมดการแสดงผล
+	$default_display_mode = get_option('rmu_news_default_display_mode', $defaults['default_display_mode']);
+
 	?>
 	<div class="wrap">
 		<h1>RMU News Settings</h1>
@@ -327,6 +336,21 @@ function rmu_news_options_page_html()
 					<td>
 						<input type="url" name="api_url" value="<?php echo esc_attr($api_url); ?>" class="regular-text" />
 						<p class="description">URL สำหรับดึงข้อมูลข่าว (เช่น https://www.rmu.ac.th/api/posts/filter)</p>
+					</td>
+				</tr>
+			</table>
+
+			<!-- Display Mode Settings Section -->
+			<h2>การตั้งค่าการแสดงผล</h2>
+			<table class="form-table">
+				<tr valign="top">
+					<th scope="row">โหมดการแสดงผลเริ่มต้น</th>
+					<td>
+						<select name="default_display_mode">
+							<option value="list" <?php selected($default_display_mode, 'list'); ?>>รายการ (List)</option>
+							<option value="card" <?php selected($default_display_mode, 'card'); ?>>การ์ด (Card)</option>
+						</select>
+						<p class="description">เลือกรูปแบบการแสดงข่าวเริ่มต้น</p>
 					</td>
 				</tr>
 			</table>

@@ -1,1 +1,0 @@
-{"version":3,"file":"rmu-news/index.css","mappings":";;;AAAA;EACC;AACD,C","sources":["webpack://rmu-news/./src/rmu-news/editor.scss"],"sourcesContent":[".wp-block-create-block-rmu-news {\r\n\tborder: 1px dotted #f00;\r\n}\r\n"],"names":[],"sourceRoot":""}
