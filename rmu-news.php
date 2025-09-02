@@ -1,7 +1,7 @@
 <?php
 /*
- * Plugin Name:       Rmu News
- * Description:       Example block scaffolded with Create Block tool.
+ * Plugin Name:       RMU News
+ * Description:       Display RMU university news with search, category filtering, and customizable list/card view modes. Features responsive design and admin color customization.
  * Version:           0.1.0
  * Requires at least: 6.7
  * Requires PHP:      7.4
@@ -290,7 +290,7 @@ function rmu_news_options_page_html()
 		update_option('rmu_news_item_meta_color', sanitize_hex_color($_POST['item_meta_color']));
 		update_option('rmu_news_item_category_background', sanitize_hex_color($_POST['item_category_background']));
 		update_option('rmu_news_item_category_text_color', sanitize_hex_color($_POST['item_category_text_color']));
-		
+
 		// เพิ่มการบันทึกการตั้งค่าโหมดการแสดงผล
 		update_option('rmu_news_default_display_mode', sanitize_text_field($_POST['default_display_mode']));
 

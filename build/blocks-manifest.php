@@ -9,7 +9,7 @@ return array(
 		'title' => 'Rmu News',
 		'category' => 'widgets',
 		'icon' => 'smiley',
-		'description' => 'Example block scaffolded with Create Block tool.',
+		'description' => 'Display RMU university news with search, category filtering, and customizable list/card view modes.',
 		'example' => array(
 			
 		),
