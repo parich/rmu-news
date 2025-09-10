@@ -55,8 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			container.getAttribute("data-category") || "ทั้งหมด";
 		const limit = container.getAttribute("data-limit") || 10;
 		
-		// การตั้งค่าโหมดการแสดงผล
-		let currentDisplayMode = settings.defaultDisplayMode || 'list';
+		// การตั้งค่าโหมดการแสดงผล - เปลี่ยนเป็น card สำหรับ mobile/tablet
+		const isMobile = window.innerWidth <= 768;
+		let currentDisplayMode = isMobile ? 'card' : (settings.defaultDisplayMode || 'list');
 		const contentElement = container.querySelector('.rmu-news-content');
 		if (contentElement) {
 			contentElement.className = `rmu-news-content ${currentDisplayMode}-view`;
